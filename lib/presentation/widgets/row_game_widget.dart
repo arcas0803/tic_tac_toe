@@ -17,10 +17,9 @@ class RowGameWidget extends StatelessWidget {
   Row _buildTopRow() {
     const column = 0;
     return Row(
-      children: [
+      children: const [
         Expanded(
           child: CellGameWidget(
-            value: values[0],
             right: true,
             column: column,
             row: 0,
@@ -28,7 +27,6 @@ class RowGameWidget extends StatelessWidget {
         ),
         Expanded(
           child: CellGameWidget(
-            value: values[1],
             right: true,
             column: column,
             row: 1,
@@ -36,7 +34,6 @@ class RowGameWidget extends StatelessWidget {
         ),
         Expanded(
           child: CellGameWidget(
-            value: values[2],
             column: column,
             row: 2,
           ),
@@ -48,10 +45,9 @@ class RowGameWidget extends StatelessWidget {
   Row _buildCenterRow() {
     const column = 1;
     return Row(
-      children: [
+      children: const [
         Expanded(
           child: CellGameWidget(
-            value: values[0],
             right: true,
             top: true,
             bottom: true,
@@ -61,7 +57,6 @@ class RowGameWidget extends StatelessWidget {
         ),
         Expanded(
           child: CellGameWidget(
-            value: values[1],
             right: true,
             top: true,
             bottom: true,
@@ -71,7 +66,6 @@ class RowGameWidget extends StatelessWidget {
         ),
         Expanded(
           child: CellGameWidget(
-            value: values[2],
             top: true,
             bottom: true,
             column: column,
@@ -85,10 +79,9 @@ class RowGameWidget extends StatelessWidget {
   Row _buildBottomRow() {
     const column = 2;
     return Row(
-      children: [
+      children: const [
         Expanded(
           child: CellGameWidget(
-            value: values[0],
             right: true,
             column: column,
             row: 0,
@@ -96,7 +89,6 @@ class RowGameWidget extends StatelessWidget {
         ),
         Expanded(
           child: CellGameWidget(
-            value: values[1],
             right: true,
             column: column,
             row: 1,
@@ -104,7 +96,6 @@ class RowGameWidget extends StatelessWidget {
         ),
         Expanded(
           child: CellGameWidget(
-            value: values[2],
             column: column,
             row: 2,
           ),
