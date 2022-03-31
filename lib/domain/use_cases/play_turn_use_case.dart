@@ -3,7 +3,6 @@ import 'package:tic_tac_toe/domain/entities/board_entity.dart';
 import 'package:tic_tac_toe/domain/entities/game_entity.dart';
 import 'package:tic_tac_toe/domain/entities/player_entity.dart';
 import 'package:tic_tac_toe/domain/entities/result.dart';
-import 'package:tic_tac_toe/domain/entities/symbol_play.dart';
 import 'package:tic_tac_toe/domain/entities/turn_entity.dart';
 import 'package:tic_tac_toe/domain/use_cases/check_winner_use_case.dart';
 import 'package:tic_tac_toe/domain/use_cases/save_game_use_case.dart';
@@ -70,17 +69,15 @@ class PlayTurnUseCase implements UseCaseFuture<GameEntity, PlayTurnParams> {
     );
 
     return checkWinnerResult.when(
-      success: (SymbolPlay? symbolPlay) {
+      success: (List<List<int>>? winnerCells) {
         // New turn
         final newTurn = TurnEntity(
           // new board
           board: params.newBoard,
           // new current player
           currentPlayer: currentPlayer,
-          // If there is a winner, the winner player is the current player.
-          winner: symbolPlay != null
-              ? params.prevGame.getPlayerFromSymbol(symbol: symbolPlay)
-              : null,
+          // If there is a winner, set the winner cells combination.
+          winnerCells: winnerCells,
         );
         // Add the new turn to the turns list.
         newTurns.add(newTurn);

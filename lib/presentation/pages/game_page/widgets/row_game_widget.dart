@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tic_tac_toe/domain/entities/symbol_play.dart';
-import 'package:tic_tac_toe/presentation/widgets/cell_game_widget.dart';
+import 'package:tic_tac_toe/presentation/pages/game_page/widgets/cell_game_widget.dart';
 
 enum RowPosition { top, bottom, center }
 
@@ -15,27 +15,27 @@ class RowGameWidget extends StatelessWidget {
   }) : super(key: key);
 
   Row _buildTopRow() {
-    const column = 0;
+    const row = 0;
     return Row(
       children: const [
         Expanded(
           child: CellGameWidget(
             right: true,
-            column: column,
-            row: 0,
+            column: 0,
+            row: row,
           ),
         ),
         Expanded(
           child: CellGameWidget(
             right: true,
-            column: column,
-            row: 1,
+            column: 1,
+            row: row,
           ),
         ),
         Expanded(
           child: CellGameWidget(
-            column: column,
-            row: 2,
+            column: 2,
+            row: row,
           ),
         ),
       ],
@@ -43,7 +43,7 @@ class RowGameWidget extends StatelessWidget {
   }
 
   Row _buildCenterRow() {
-    const column = 1;
+    const row = 1;
     return Row(
       children: const [
         Expanded(
@@ -51,8 +51,8 @@ class RowGameWidget extends StatelessWidget {
             right: true,
             top: true,
             bottom: true,
-            column: column,
-            row: 0,
+            column: 0,
+            row: row,
           ),
         ),
         Expanded(
@@ -60,16 +60,16 @@ class RowGameWidget extends StatelessWidget {
             right: true,
             top: true,
             bottom: true,
-            column: column,
-            row: 1,
+            column: 1,
+            row: row,
           ),
         ),
         Expanded(
           child: CellGameWidget(
             top: true,
             bottom: true,
-            column: column,
-            row: 2,
+            column: 2,
+            row: row,
           ),
         ),
       ],
@@ -77,27 +77,27 @@ class RowGameWidget extends StatelessWidget {
   }
 
   Row _buildBottomRow() {
-    const column = 2;
+    const row = 2;
     return Row(
       children: const [
         Expanded(
           child: CellGameWidget(
             right: true,
-            column: column,
-            row: 0,
+            column: 0,
+            row: row,
           ),
         ),
         Expanded(
           child: CellGameWidget(
             right: true,
-            column: column,
-            row: 1,
+            column: 1,
+            row: row,
           ),
         ),
         Expanded(
           child: CellGameWidget(
-            column: column,
-            row: 2,
+            column: 2,
+            row: row,
           ),
         ),
       ],

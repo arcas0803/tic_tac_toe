@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tic_tac_toe/presentation/controllers/game_controller.dart';
-import 'package:tic_tac_toe/presentation/widgets/players_header.dart';
-import 'package:tic_tac_toe/presentation/widgets/row_game_widget.dart';
+
+import 'widgets/widgets.dart';
 
 class GamePage extends StatelessWidget {
   const GamePage({Key? key}) : super(key: key);

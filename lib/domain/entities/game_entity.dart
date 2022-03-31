@@ -1,4 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:tic_tac_toe/domain/entities/board_entity.dart';
 import 'package:tic_tac_toe/domain/entities/player_entity.dart';
 import 'package:tic_tac_toe/domain/entities/symbol_play.dart';
 import 'package:tic_tac_toe/domain/entities/turn_entity.dart';
@@ -23,8 +25,10 @@ class GameEntity extends Equatable {
 
   GameEntity.initial()
       : id = const Uuid().v4(),
-        player1 = const PlayerEntity(name: 'Player 1', symbol: SymbolPlay.x),
-        player2 = const PlayerEntity(name: 'Player 2', symbol: SymbolPlay.o),
+        player1 = const PlayerEntity(
+            name: 'Player 1', symbol: SymbolPlay.x, color: Colors.red),
+        player2 = const PlayerEntity(
+            name: 'Player 2', symbol: SymbolPlay.o, color: Colors.amber),
         turns = const [
           TurnEntity.initial(
               currentPlayer:
@@ -34,8 +38,14 @@ class GameEntity extends Equatable {
   /// Return null if there are not turns.
   TurnEntity get currentTurn => turns.last;
 
+  PlayerEntity get currentPlayer => currentTurn.currentPlayer;
+
+  BoardEntity get currentBoard => currentTurn.board;
+
   /// Return null when no winner.
-  PlayerEntity? get winnerPlayer => turns.isEmpty ? null : turns.last.winner;
+  PlayerEntity? get winnerPlayer => turns.last.winner;
+
+  List<List<int>>? get winnerCells => turns.last.winnerCells;
 
   /// Get player from symbol.
   PlayerEntity getPlayerFromSymbol({required SymbolPlay symbol}) {

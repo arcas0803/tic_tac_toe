@@ -12,7 +12,7 @@ class TurnMapper implements Mapper<TurnModel, TurnEntity> {
     return TurnEntity(
       currentPlayer: PlayerMapper().toEntity(model: model.currentPlayer)!,
       board: BoardMapper().toEntity(model: model.board)!,
-      winner: PlayerMapper().toEntity(model: model.winner),
+      winnerCells: model.winnerCells,
     );
   }
 
@@ -23,7 +23,7 @@ class TurnMapper implements Mapper<TurnModel, TurnEntity> {
     return TurnModel(
       currentPlayer: PlayerMapper().toModel(entity: entity.currentPlayer)!,
       board: BoardMapper().toModel(entity: entity.board)!,
-      winner: PlayerMapper().toModel(entity: entity.winner),
+      winnerCells: entity.winnerCells,
     );
   }
 }

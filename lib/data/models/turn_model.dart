@@ -11,12 +11,12 @@ class TurnModel {
 
   final BoardModel board;
 
-  final PlayerModel? winner;
+  final List<List<int>>? winnerCells;
 
   const TurnModel({
     required this.currentPlayer,
     required this.board,
-    this.winner,
+    this.winnerCells,
   });
 
   factory TurnModel.fromJson(Map<String, dynamic> json) =>

@@ -9,38 +9,43 @@ import 'package:tic_tac_toe/domain/entities/player_entity.dart';
 class TurnEntity extends Equatable {
   // Current player
   final PlayerEntity currentPlayer;
-  // Winner player
-  final PlayerEntity? winner;
+
+  // Winner cells.
+  final List<List<int>>? winnerCells;
+
   // Board of the game in this turn
   final BoardEntity board;
 
   const TurnEntity({
     required this.currentPlayer,
-    this.winner,
+    this.winnerCells,
     required this.board,
   });
 
+  /// Get the winner player from the turn.
+  PlayerEntity? get winner => winnerCells != null ? currentPlayer : null;
+
   /// Use this constructor to create the first turn in a new game.
   const TurnEntity.initial({required this.currentPlayer})
-      : winner = null,
+      : winnerCells = null,
         board = const BoardEntity.initial();
 
   TurnEntity copyWith({
     PlayerEntity? currentPlayer,
-    PlayerEntity? winner,
+    List<List<int>>? winnerCells,
     BoardEntity? board,
   }) {
     return TurnEntity(
       currentPlayer: currentPlayer ?? this.currentPlayer,
-      winner: winner ?? this.winner,
+      winnerCells: winnerCells ?? this.winnerCells,
       board: board ?? this.board,
     );
   }
 
   @override
   String toString() =>
-      'TurnEntity(currentPlayer: $currentPlayer, winner: $winner, board: $board)';
+      'TurnEntity(currentPlayer: $currentPlayer, winnerCells: $winnerCells, board: $board)';
 
   @override
-  List<Object?> get props => [currentPlayer, winner, board];
+  List<Object?> get props => [currentPlayer, winnerCells, board];
 }

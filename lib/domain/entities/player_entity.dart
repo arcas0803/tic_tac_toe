@@ -1,13 +1,14 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:tic_tac_toe/domain/entities/symbol_play.dart';
 
 class PlayerEntity extends Equatable {
   final String name;
   final SymbolPlay symbol;
-  const PlayerEntity({
-    required this.name,
-    required this.symbol,
-  });
+  final Color color;
+
+  const PlayerEntity(
+      {required this.name, required this.symbol, this.color = Colors.black});
 
   PlayerEntity copyWith({
     String? name,

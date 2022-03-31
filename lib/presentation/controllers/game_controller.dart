@@ -47,7 +47,7 @@ class GameController extends StateNotifier<GameEntity> {
         _playTurnUseCase = playTurnUseCase,
         super(GameEntity.initial());
 
-  BoardEntity _updateBoard({required int column, required int row}) {
+  BoardEntity _updateBoard({required int row, required int column}) {
     List<List<SymbolPlay>> currentBoard = [];
     for (int i = 0; i < state.currentTurn.board.board.length; i++) {
       currentBoard.add([]);
@@ -56,14 +56,17 @@ class GameController extends StateNotifier<GameEntity> {
       }
     }
 
-    currentBoard[column].removeAt(row);
-    currentBoard[column].insert(row, state.currentTurn.currentPlayer.symbol);
+    currentBoard[row].removeAt(column);
+    currentBoard[row].insert(column, state.currentTurn.currentPlayer.symbol);
 
     return BoardEntity(board: currentBoard);
   }
 
-  Future<void> playTurn({required int column, required int row}) async {
-    final newBoard = _updateBoard(column: column, row: row);
+  Future<void> playTurn({
+    required int row,
+    required int column,
+  }) async {
+    final newBoard = _updateBoard(row: row, column: column);
     final result = await _playTurnUseCase(
       params: PlayTurnParams(
         newBoard: newBoard,
@@ -71,8 +74,6 @@ class GameController extends StateNotifier<GameEntity> {
       ),
     );
     result.ifSuccess((data) {
-      print(data.currentTurn.board.board.toString());
-      print(data.currentTurn.winner);
       state = data;
     });
   }

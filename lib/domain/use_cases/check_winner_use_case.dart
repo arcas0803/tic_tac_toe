@@ -26,9 +26,10 @@ class CheckWinnerParams extends Equatable {
   List<Object> get props => [board];
 }
 
-class CheckWinnerUseCase implements UseCase<SymbolPlay?, CheckWinnerParams> {
+class CheckWinnerUseCase
+    implements UseCase<List<List<int>>?, CheckWinnerParams> {
   // Check all rows for a winner.
-  SymbolPlay? _checkRows({required BoardEntity board}) {
+  List<List<int>>? _checkRows({required BoardEntity board}) {
     // Build an array of all rows checks.
     // If a row contains the same symbol in all cells, return true.
     // Otherwise, return false.
@@ -37,17 +38,21 @@ class CheckWinnerUseCase implements UseCase<SymbolPlay?, CheckWinnerParams> {
             e.every((element) => element == e[0] && element != SymbolPlay.none))
         .toList();
 
-    // Check results. If a row contains a winner result, return the symbol of the winner.
+    // Check results. If a row contains a winner result, return the position of all cells of the winner combination.
     for (int i = 0; i < results.length; i++) {
       if (results[i]) {
-        return board.board[i][0];
+        List<List<int>> winnerCells = [];
+        for (int j = 0; j < board.board.length; j++) {
+          winnerCells.add([i, j]);
+        }
+        return winnerCells;
       }
     }
     return null;
   }
 
   // Check all columns for a winner.
-  SymbolPlay? _checkColumns({required BoardEntity board}) {
+  List<List<int>>? _checkColumns({required BoardEntity board}) {
     // Transpose matriz to evaluate columns as rows.
     final List<List<SymbolPlay>> boardTemp = [];
 
@@ -61,7 +66,7 @@ class CheckWinnerUseCase implements UseCase<SymbolPlay?, CheckWinnerParams> {
     return _checkRows(board: BoardEntity(board: boardTemp));
   }
 
-  SymbolPlay? _checkDiagonals({required BoardEntity board}) {
+  List<List<int>>? _checkDiagonals({required BoardEntity board}) {
     // Check first diagonal.
     final firstDiagonal = [];
 
@@ -75,7 +80,14 @@ class CheckWinnerUseCase implements UseCase<SymbolPlay?, CheckWinnerParams> {
       if (firstDiagonal[0] == SymbolPlay.none) {
         return null;
       }
-      return firstDiagonal[0];
+      // If a diagonal contains a winner result, return the position of all cells of the winner combination.
+      List<List<int>> winnerCells = [];
+      int columnFirst = 0;
+      for (int rowFirst = 0; rowFirst < board.board.length; rowFirst++) {
+        winnerCells.add([rowFirst, columnFirst]);
+        columnFirst++;
+      }
+      return winnerCells;
     }
 
     // Check second diagonal.
@@ -91,30 +103,38 @@ class CheckWinnerUseCase implements UseCase<SymbolPlay?, CheckWinnerParams> {
         return null;
       }
 
-      return secondDiagonal[0];
+      // If a diagonal contains a winner result, return the position of all cells of the winner combination.
+      List<List<int>> winnerCells = [];
+      int columnSecond = board.board.length - 1;
+
+      for (int rowSecond = 0; rowSecond < board.board.length; rowSecond++) {
+        winnerCells.add([rowSecond, columnSecond]);
+        columnSecond--;
+      }
+      return winnerCells;
     }
 
     return null;
   }
 
   @override
-  Result<SymbolPlay?> call({required CheckWinnerParams params}) {
+  Result<List<List<int>>?> call({required CheckWinnerParams params}) {
     final board = params.board;
 
     // Check rows.
     final resultRows = _checkRows(board: board);
-    if (resultRows != null) {
+    if (resultRows != null && resultRows.isNotEmpty) {
       return Result.success(data: resultRows);
     }
     // Check columns.
     final resultColumns = _checkColumns(board: board);
-    if (resultColumns != null) {
+    if (resultColumns != null && resultColumns.isNotEmpty) {
       return Result.success(data: resultColumns);
     }
 
     // Check diagonals.
     final resultDiagonals = _checkDiagonals(board: board);
-    if (resultDiagonals != null) {
+    if (resultDiagonals != null && resultDiagonals.isNotEmpty) {
       return Result.success(data: resultDiagonals);
     }
 

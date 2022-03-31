@@ -10,13 +10,13 @@ TurnModel _$TurnModelFromJson(Map<String, dynamic> json) => TurnModel(
       currentPlayer:
           PlayerModel.fromJson(json['currentPlayer'] as Map<String, dynamic>),
       board: BoardModel.fromJson(json['board'] as Map<String, dynamic>),
-      winner: json['winner'] == null
-          ? null
-          : PlayerModel.fromJson(json['winner'] as Map<String, dynamic>),
+      winnerCells: (json['winnerCells'] as List<dynamic>?)
+          ?.map((e) => (e as List<dynamic>).map((e) => e as int).toList())
+          .toList(),
     );
 
 Map<String, dynamic> _$TurnModelToJson(TurnModel instance) => <String, dynamic>{
       'currentPlayer': instance.currentPlayer,
       'board': instance.board,
-      'winner': instance.winner,
+      'winnerCells': instance.winnerCells,
     };
