@@ -62,8 +62,17 @@ class CheckWinnerUseCase
         boardTemp[row].add(board.board[column][row]);
       }
     }
-
-    return _checkRows(board: BoardEntity(board: boardTemp));
+    for (int column = 0; column < boardTemp.length; column++) {
+      if (boardTemp[column].every((element) =>
+          element != SymbolPlay.none && element == boardTemp[column][0])) {
+        List<List<int>> winnerCells = [];
+        for (int j = 0; j < board.board.length; j++) {
+          winnerCells.add([j, column]);
+        }
+        return winnerCells;
+      }
+    }
+    return null;
   }
 
   List<List<int>>? _checkDiagonals({required BoardEntity board}) {

@@ -47,6 +47,9 @@ class GameEntity extends Equatable {
 
   List<List<int>>? get winnerCells => turns.last.winnerCells;
 
+  /// Defines if the turn can be replay.
+  bool get canReplay => turns.length > 1;
+
   /// Get player from symbol.
   PlayerEntity getPlayerFromSymbol({required SymbolPlay symbol}) {
     if (symbol == player1.symbol) {

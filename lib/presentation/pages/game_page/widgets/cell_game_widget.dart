@@ -118,7 +118,7 @@ class CellGameWidget extends StatelessWidget {
           decoration: _buildBoxDecoration(),
           child: CellGameValueWidget(
             color: winnerCell
-                ? Colors.green
+                ? Colors.deepPurple
                 : value == player1.symbol
                     ? player1.color
                     : player2.color,

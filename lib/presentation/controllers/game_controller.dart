@@ -4,8 +4,10 @@ import 'package:tic_tac_toe/domain/entities/game_entity.dart';
 import 'package:tic_tac_toe/domain/entities/symbol_play.dart';
 import 'package:tic_tac_toe/domain/use_cases/check_winner_use_case.dart';
 import 'package:tic_tac_toe/domain/use_cases/play_turn_use_case.dart';
+import 'package:tic_tac_toe/domain/use_cases/replay_turn_use_case.dart';
 import 'package:tic_tac_toe/domain/use_cases/save_game_use_case.dart';
 import 'package:tic_tac_toe/domain/use_cases/start_game_use_case.dart';
+import 'package:tic_tac_toe/domain/use_cases/use_case.dart';
 import 'package:tic_tac_toe/presentation/controllers/games_controller.dart';
 
 final startGameUseCaseProvider = Provider<StartGameUseCase>((ref) {
@@ -28,23 +30,35 @@ final playTurnUseCaseProvider = Provider<PlayTurnUseCase>((ref) {
       checkWinnerUseCase: checkWinnerUseCase, saveGameUseCase: saveGameUseCase);
 });
 
+final replayTurnUseCaseProvider = Provider<ReplayTurnUseCase>((ref) {
+  final saveGameUseCase = ref.watch(saveGameUseCaseProvider);
+
+  return ReplayTurnUseCase(saveGameUseCase: saveGameUseCase);
+});
+
 final gameControllerProvider =
     StateNotifierProvider<GameController, GameEntity>((ref) {
   final startGameUseCase = ref.watch(startGameUseCaseProvider);
   final playTurnUseCase = ref.watch(playTurnUseCaseProvider);
+  final replayTurnUseCase = ref.watch(replayTurnUseCaseProvider);
   return GameController(
-      startGameUseCase: startGameUseCase, playTurnUseCase: playTurnUseCase);
+      startGameUseCase: startGameUseCase,
+      playTurnUseCase: playTurnUseCase,
+      replayTurnUseCase: replayTurnUseCase);
 });
 
 class GameController extends StateNotifier<GameEntity> {
   final StartGameUseCase _startGameUseCase;
   final PlayTurnUseCase _playTurnUseCase;
+  final ReplayTurnUseCase _replayTurnUseCase;
 
   GameController(
       {required StartGameUseCase startGameUseCase,
-      required PlayTurnUseCase playTurnUseCase})
+      required PlayTurnUseCase playTurnUseCase,
+      required ReplayTurnUseCase replayTurnUseCase})
       : _startGameUseCase = startGameUseCase,
         _playTurnUseCase = playTurnUseCase,
+        _replayTurnUseCase = replayTurnUseCase,
         super(GameEntity.initial());
 
   BoardEntity _updateBoard({required int row, required int column}) {
@@ -72,6 +86,29 @@ class GameController extends StateNotifier<GameEntity> {
         newBoard: newBoard,
         prevGame: state,
       ),
+    );
+    result.ifSuccess((data) {
+      state = data;
+    });
+  }
+
+  Future<void> replayTurn() async {
+    if (!state.canReplay) return;
+    final result = await _replayTurnUseCase(
+      params: ReplayTurnParams(
+        game: state,
+      ),
+    );
+    result.ifSuccess(
+      (data) {
+        state = data;
+      },
+    );
+  }
+
+  void restartGame() {
+    final result = _startGameUseCase(
+      params: NoParams(),
     );
     result.ifSuccess((data) {
       state = data;

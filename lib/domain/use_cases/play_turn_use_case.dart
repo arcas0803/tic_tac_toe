@@ -57,9 +57,6 @@ class PlayTurnUseCase implements UseCaseFuture<GameEntity, PlayTurnParams> {
   Future<Result<GameEntity>> call({required PlayTurnParams params}) {
     // New turns list
     List<TurnEntity> newTurns = List<TurnEntity>.from(params.prevGame.turns);
-    // New current player
-    final PlayerEntity currentPlayer =
-        _getNewCurrentPlayer(prevGame: params.prevGame);
 
     // Check if the game is over.
     final checkWinnerResult = _checkWinnerUseCase.call(
@@ -70,6 +67,16 @@ class PlayTurnUseCase implements UseCaseFuture<GameEntity, PlayTurnParams> {
 
     return checkWinnerResult.when(
       success: (List<List<int>>? winnerCells) {
+        // New current player
+        late PlayerEntity currentPlayer;
+        // If there is a winner, the current player is the winner.
+        if (winnerCells != null) {
+          currentPlayer = params.prevGame.currentPlayer;
+        } else {
+          // If there is no winner, the opponent player is the new current player.
+          currentPlayer = _getNewCurrentPlayer(prevGame: params.prevGame);
+        }
+
         // New turn
         final newTurn = TurnEntity(
           // new board
