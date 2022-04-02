@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tic_tac_toe/presentation/pages/game_page/game_page.dart';
+import 'package:tic_tac_toe/presentation/pages/config_page/config_page.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -12,7 +12,7 @@ class App extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const GamePage(),
+      home: const ConfigPage(),
     );
   }
 }
