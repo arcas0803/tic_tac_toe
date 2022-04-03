@@ -35,6 +35,10 @@ class GameEntity extends Equatable {
                   PlayerEntity(name: 'Player 1', symbol: SymbolPlay.x))
         ];
 
+  GameEntity.withPlayers({required this.player1, required this.player2})
+      : id = const Uuid().v4(),
+        turns = [TurnEntity.initial(currentPlayer: player1)];
+
   /// Return null if there are not turns.
   TurnEntity get currentTurn => turns.last;
 

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tic_tac_toe/domain/entities/game_entity.dart';
+import 'package:tic_tac_toe/domain/entities/player_entity.dart';
 import 'package:tic_tac_toe/presentation/controllers/color_picker_controller.dart';
 import 'package:tic_tac_toe/presentation/controllers/player_controller.dart';
+import 'package:tic_tac_toe/presentation/controllers/symbol_picker_controller.dart';
 import 'package:tic_tac_toe/presentation/pages/config_page/widgets/color_picker_widget.dart';
+import 'package:tic_tac_toe/presentation/pages/config_page/widgets/symbol_picker_widget.dart';
 
 class ConfigPage extends StatelessWidget {
   const ConfigPage({Key? key}) : super(key: key);
@@ -27,6 +31,23 @@ class ConfigPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Consumer(
+                    builder: (context, ref, child) {
+                      final selected = ref.watch(symbolPickerControllerProvider
+                          .select((value) => value.player1Symbol));
+                      final color =
+                          ref.watch(colorPickerControllerProvider('player 1'));
+
+                      return SymbolPickerWidget(
+                        value: selected,
+                        color: color,
+                        onTap: ref
+                            .read(symbolPickerControllerProvider.notifier)
+                            .changePlayer1Symbol,
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  Consumer(
                     builder: (context, ref, child) => TextFormField(
                       decoration: const InputDecoration(
                         labelText: 'Player 1',
@@ -39,7 +60,24 @@ class ConfigPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  const ColorPickerWidget(id: 'player1'),
+                  const ColorPickerWidget(id: 'player 1'),
+                  const SizedBox(height: 20),
+                  Consumer(
+                    builder: (context, ref, child) {
+                      final selected = ref.watch(symbolPickerControllerProvider
+                          .select((value) => value.player2Symbol));
+                      final color =
+                          ref.watch(colorPickerControllerProvider('player 2'));
+
+                      return SymbolPickerWidget(
+                        value: selected,
+                        color: color,
+                        onTap: ref
+                            .read(symbolPickerControllerProvider.notifier)
+                            .changePlayer2Symbol,
+                      );
+                    },
+                  ),
                   const SizedBox(height: 20),
                   Consumer(
                     builder: (context, ref, child) => TextFormField(
@@ -68,6 +106,11 @@ class ConfigPage extends StatelessWidget {
               child: Consumer(
                 builder: (context, ref, child) => OutlinedButton(
                   onPressed: () {
+                    final player1Symbol =
+                        ref.read(symbolPickerControllerProvider).player1Symbol;
+                    final player2Symbol =
+                        ref.read(symbolPickerControllerProvider).player2Symbol;
+
                     final player1Name = ref
                         .read(playerNameControllerProvider('player 1').notifier)
                         .state;
@@ -83,11 +126,17 @@ class ConfigPage extends StatelessWidget {
                         .read(
                             colorPickerControllerProvider('player 2').notifier)
                         .state;
-                    print(player1Name);
-                    print(player2Name);
-                    print(player1Color);
-                    print(player2Color);
-                    //final player1 = PlayerEntity(name: player1Name, symbol: symbol, color: player1Color);
+
+                    final player1 = PlayerEntity(
+                        name: player1Name.isEmpty ? 'Player 1' : player1Name,
+                        symbol: player1Symbol,
+                        color: player1Color);
+                    final player2 = PlayerEntity(
+                        name: player2Name.isEmpty ? 'Player 2' : player2Name,
+                        symbol: player2Symbol,
+                        color: player2Color);
+                    final game = GameEntity.withPlayers(
+                        player1: player1, player2: player2);
                   },
                   style: ButtonStyle(
                     shape: MaterialStateProperty.all(
