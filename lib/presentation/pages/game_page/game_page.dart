@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tic_tac_toe/domain/entities/player_entity.dart';
 import 'package:tic_tac_toe/presentation/controllers/game_controller.dart';
+import 'package:tic_tac_toe/presentation/pages/game_page/widgets/controls_bottom_widget.dart';
 
 import 'widgets/widgets.dart';
 
 class GamePage extends StatelessWidget {
-  const GamePage({Key? key}) : super(key: key);
+  const GamePage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -82,6 +85,7 @@ class GamePage extends StatelessWidget {
                   ),
                 ),
               ),
+              const ControlsBottomWidget(),
             ],
           );
         }),

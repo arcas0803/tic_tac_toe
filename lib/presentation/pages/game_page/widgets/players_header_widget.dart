@@ -34,7 +34,6 @@ class PlayersHeaderWidget extends StatelessWidget {
             },
           ),
         ),
-        const ReplayWidget(),
         PlayerBoxWidget(
           child: Consumer(
             builder: (context, ref, child) {

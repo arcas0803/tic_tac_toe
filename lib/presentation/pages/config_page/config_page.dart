@@ -1,12 +1,16 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tic_tac_toe/domain/entities/game_entity.dart';
 import 'package:tic_tac_toe/domain/entities/player_entity.dart';
 import 'package:tic_tac_toe/presentation/controllers/color_picker_controller.dart';
+import 'package:tic_tac_toe/presentation/controllers/game_controller.dart';
 import 'package:tic_tac_toe/presentation/controllers/player_controller.dart';
 import 'package:tic_tac_toe/presentation/controllers/symbol_picker_controller.dart';
 import 'package:tic_tac_toe/presentation/pages/config_page/widgets/color_picker_widget.dart';
 import 'package:tic_tac_toe/presentation/pages/config_page/widgets/symbol_picker_widget.dart';
+import 'package:tic_tac_toe/presentation/router/router.dart';
+import 'package:tic_tac_toe/presentation/widgets/rounded_button_widget.dart';
 
 class ConfigPage extends StatelessWidget {
   const ConfigPage({Key? key}) : super(key: key);
@@ -104,7 +108,7 @@ class ConfigPage extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10.0),
               child: Consumer(
-                builder: (context, ref, child) => OutlinedButton(
+                builder: (context, ref, child) => RoundedButtonWidget(
                   onPressed: () {
                     final player1Symbol =
                         ref.read(symbolPickerControllerProvider).player1Symbol;
@@ -137,30 +141,14 @@ class ConfigPage extends StatelessWidget {
                         color: player2Color);
                     final game = GameEntity.withPlayers(
                         player1: player1, player2: player2);
+
+                    ref.read(gameParamStateProvider.notifier).state = game;
+
+                    context.replaceRoute(
+                      const GameRoute(),
+                    );
                   },
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                    backgroundColor: MaterialStateProperty.all(Colors.red),
-                    textStyle: MaterialStateProperty.all(
-                      const TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  child: const Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Text(
-                      "Accept",
-                      style: TextStyle(
-                        fontSize: 30,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
+                  title: "Accept",
                 ),
               ),
             ),

@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:tic_tac_toe/domain/entities/player_entity.dart';
+import 'package:tic_tac_toe/presentation/widgets/rounded_button_widget.dart';
 
 class WinnerGameDialog extends StatefulWidget {
   final void Function() onClose;
@@ -102,57 +103,13 @@ class _WinnerGameDialogState extends State<WinnerGameDialog> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  OutlinedButton(
+                  RoundedButtonWidget(
                     onPressed: () => widget.onClose(),
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                      backgroundColor: MaterialStateProperty.all(Colors.red),
-                      textStyle: MaterialStateProperty.all(
-                        const TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    child: const Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Text(
-                        "Close",
-                        style: TextStyle(
-                          fontSize: 30,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
+                    title: "Close",
                   ),
-                  OutlinedButton(
+                  RoundedButtonWidget(
                     onPressed: widget.onReplayGame,
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                      backgroundColor: MaterialStateProperty.all(Colors.red),
-                      textStyle: MaterialStateProperty.all(
-                        const TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    child: const Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Text(
-                        "New Game",
-                        style: TextStyle(
-                          fontSize: 30,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
+                    title: "New Game",
                   ),
                 ],
               ),

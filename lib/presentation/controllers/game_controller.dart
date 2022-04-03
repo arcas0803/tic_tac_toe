@@ -7,7 +7,6 @@ import 'package:tic_tac_toe/domain/use_cases/play_turn_use_case.dart';
 import 'package:tic_tac_toe/domain/use_cases/replay_turn_use_case.dart';
 import 'package:tic_tac_toe/domain/use_cases/save_game_use_case.dart';
 import 'package:tic_tac_toe/domain/use_cases/start_game_use_case.dart';
-import 'package:tic_tac_toe/domain/use_cases/use_case.dart';
 import 'package:tic_tac_toe/presentation/controllers/games_controller.dart';
 
 final startGameUseCaseProvider = Provider<StartGameUseCase>((ref) {
@@ -36,15 +35,20 @@ final replayTurnUseCaseProvider = Provider<ReplayTurnUseCase>((ref) {
   return ReplayTurnUseCase(saveGameUseCase: saveGameUseCase);
 });
 
+final gameParamStateProvider = StateProvider<GameEntity?>((ref) => null);
+
 final gameControllerProvider =
     StateNotifierProvider<GameController, GameEntity>((ref) {
   final startGameUseCase = ref.watch(startGameUseCaseProvider);
   final playTurnUseCase = ref.watch(playTurnUseCaseProvider);
   final replayTurnUseCase = ref.watch(replayTurnUseCaseProvider);
+  final gameEntity = ref.watch(gameParamStateProvider);
   return GameController(
-      startGameUseCase: startGameUseCase,
-      playTurnUseCase: playTurnUseCase,
-      replayTurnUseCase: replayTurnUseCase);
+    startGameUseCase: startGameUseCase,
+    playTurnUseCase: playTurnUseCase,
+    replayTurnUseCase: replayTurnUseCase,
+    gameEntity: gameEntity,
+  );
 });
 
 class GameController extends StateNotifier<GameEntity> {
@@ -55,11 +59,14 @@ class GameController extends StateNotifier<GameEntity> {
   GameController(
       {required StartGameUseCase startGameUseCase,
       required PlayTurnUseCase playTurnUseCase,
-      required ReplayTurnUseCase replayTurnUseCase})
+      required ReplayTurnUseCase replayTurnUseCase,
+      GameEntity? gameEntity})
       : _startGameUseCase = startGameUseCase,
         _playTurnUseCase = playTurnUseCase,
         _replayTurnUseCase = replayTurnUseCase,
-        super(GameEntity.initial());
+        super(
+          gameEntity ?? GameEntity.initial(),
+        );
 
   BoardEntity _updateBoard({required int row, required int column}) {
     List<List<SymbolPlay>> currentBoard = [];
@@ -108,7 +115,7 @@ class GameController extends StateNotifier<GameEntity> {
 
   void restartGame() {
     final result = _startGameUseCase(
-      params: NoParams(),
+      params: StartGameParams(gameEntity: state),
     );
     result.ifSuccess((data) {
       state = data;
