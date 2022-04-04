@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tic_tac_toe/domain/entities/symbol_play.dart';
@@ -19,7 +18,7 @@ import 'package:tic_tac_toe/presentation/pages/game_page/widgets/cell_game_value
 /// The parameters [top], [right], [bottom], [left] are used to determine the lines
 /// that are drawn around the cell.
 
-class CellGameWidget extends StatelessWidget {
+class CellGameWidget extends ConsumerWidget {
   /// Needs a top line.
   final bool top;
 
@@ -33,6 +32,7 @@ class CellGameWidget extends StatelessWidget {
   final bool right;
 
   final int row;
+
   final int column;
 
   const CellGameWidget({
@@ -65,67 +65,72 @@ class CellGameWidget extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Consumer(builder: (context, ref, child) {
-      // Watch if there is a winner. If there is, the cell should be disabled.
-      final winner = ref.watch(
-          gameControllerProvider.select((value) => value.currentTurn.winner));
-
-      // Watch the actual value of the cell.
-      final value = ref.watch(
-        gameControllerProvider.select(
-          (value) => value.currentBoard.board[row][column],
-        ),
-      );
-
-      final player1 = ref.watch(
-        gameControllerProvider.select(
-          (value) => value.player1,
-        ),
-      );
-
-      final player2 = ref.watch(
-        gameControllerProvider.select(
-          (value) => value.player2,
-        ),
-      );
-
-      final winnerCell = ref.watch(
-        gameControllerProvider.select(
-          (state) {
-            if (state.winnerCells != null) {
-              final search = state.winnerCells!
-                  .indexWhere((element) => listEquals([row, column], element));
-              return search != -1;
+  Widget build(BuildContext context, ref) {
+    // Get the current cell from the board.
+    final cell = ref.watch(
+      gameControllerProvider.select(
+        (value) => value.currentBoard.board[row][column],
+      ),
+    );
+    // Determines the color of the cell.
+    final color = ref.watch(
+      gameControllerProvider.select(
+        (value) {
+          // If the cell is winner cell, then the color is the default color for winner.
+          if (value.winnerCells != null) {
+            if (value.winnerCells!.contains(cell)) {
+              return Colors.deepPurple;
             }
-            return false;
-          },
-        ),
-      );
+          }
 
-      return GestureDetector(
-        // If the game has a winner (game over), the cell should be disabled.
-        onTap: winner != null
-            ? null
-            // If a value has been set before, don't allow to change it.
-            : value != SymbolPlay.none
-                ? null
-                : () => ref.read(gameControllerProvider.notifier).playTurn(
-                      column: column,
-                      row: row,
-                    ),
-        child: Container(
-          decoration: _buildBoxDecoration(),
-          child: CellGameValueWidget(
-            color: winnerCell
-                ? Colors.deepPurple
-                : value == player1.symbol
-                    ? player1.color
-                    : player2.color,
-            value: value,
-          ),
+          // If the cell contains the symbol of player 1, then the color is player1 color.
+          if (value.currentBoard.board[row][column].value ==
+              value.player1.symbol) {
+            return value.player1.color;
+          }
+          // If the cell contains the symbol of player 2, then the color is player2 color.
+          if (value.currentBoard.board[row][column].value ==
+              value.player2.symbol) {
+            return value.player2.color;
+          }
+
+          // If the cell is empty, then the color is the default color for empty.
+          return Colors.black;
+        },
+      ),
+    );
+    // Determines the hability of the cell to changes it's value.
+    final canChangeValue = ref.watch(
+      gameControllerProvider.select(
+        (value) {
+          // If there is a previous symbol, then the cell is not empty, so it can't be changed.
+          if (value.currentBoard.board[row][column].value != SymbolPlay.none) {
+            return false;
+          }
+          // If the game is over, then the cell can't be changed.
+          if (value.winnerPlayer != null) {
+            return false;
+          }
+          return true;
+        },
+      ),
+    );
+
+    return GestureDetector(
+      // If the game has a winner (game over), the cell should be disabled.
+      onTap: canChangeValue
+          ? () => ref.read(gameControllerProvider.notifier).playTurn(
+                column: column,
+                row: row,
+              )
+          : null,
+      child: Container(
+        decoration: _buildBoxDecoration(),
+        child: CellGameValueWidget(
+          color: color,
+          value: cell.value,
         ),
-      );
-    });
+      ),
+    );
   }
 }

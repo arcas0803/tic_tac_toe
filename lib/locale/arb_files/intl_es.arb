@@ -1,0 +1,17 @@
+{
+    "game_name": "Tic Tac Toe",
+    "settings_game": "Ajustes del juego",
+    "accept": "Aceptar",
+    "cancel": "Cancelar",
+    "undo": "Deshacer",
+    "reset": "Reiniciar",
+    "winner_message": "Tú eres el ganador {playerName}",
+    "@playerName": {
+        "description": "Nombre del jugador",
+        "placeholder": {
+            "playerName": {}
+        }
+    },
+    "new_game": "Nuevo juego",
+    "close": "Cerrar"
+}

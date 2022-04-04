@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:tic_tac_toe/domain/entities/board_entity.dart';
+import 'package:tic_tac_toe/domain/entities/cell_entity.dart';
 import 'package:tic_tac_toe/domain/entities/player_entity.dart';
 
 /// Turn entity represents a turn of the game.
@@ -11,7 +12,7 @@ class TurnEntity extends Equatable {
   final PlayerEntity currentPlayer;
 
   // Winner cells.
-  final List<List<int>>? winnerCells;
+  final List<CellEntity>? winnerCells;
 
   // Board of the game in this turn
   final BoardEntity board;
@@ -26,13 +27,13 @@ class TurnEntity extends Equatable {
   PlayerEntity? get winner => winnerCells != null ? currentPlayer : null;
 
   /// Use this constructor to create the first turn in a new game.
-  const TurnEntity.initial({required this.currentPlayer})
+  TurnEntity.initial({required this.currentPlayer, int size = 3})
       : winnerCells = null,
-        board = const BoardEntity.initial();
+        board = BoardEntity.bySize(size: size);
 
   TurnEntity copyWith({
     PlayerEntity? currentPlayer,
-    List<List<int>>? winnerCells,
+    List<CellEntity>? winnerCells,
     BoardEntity? board,
   }) {
     return TurnEntity(

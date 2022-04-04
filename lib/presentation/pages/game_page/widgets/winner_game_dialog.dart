@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:tic_tac_toe/domain/entities/player_entity.dart';
+import 'package:tic_tac_toe/locale/l10n.dart';
 import 'package:tic_tac_toe/presentation/widgets/rounded_button_widget.dart';
 
 class WinnerGameDialog extends StatefulWidget {
@@ -89,7 +90,7 @@ class _WinnerGameDialogState extends State<WinnerGameDialog> {
                     color: Colors.white,
                   ),
                   child: Text(
-                    "You won: ${widget.winner.name}",
+                    S.of(context).winner_message(widget.winner.name),
                   ),
                 ),
               ),
@@ -105,11 +106,11 @@ class _WinnerGameDialogState extends State<WinnerGameDialog> {
                 children: [
                   RoundedButtonWidget(
                     onPressed: () => widget.onClose(),
-                    title: "Close",
+                    title: S.of(context).close,
                   ),
                   RoundedButtonWidget(
                     onPressed: widget.onReplayGame,
-                    title: "New Game",
+                    title: S.of(context).new_game,
                   ),
                 ],
               ),

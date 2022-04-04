@@ -26,6 +26,8 @@ class StartGameParams extends Equatable {
   List<Object?> get props => [gameEntity];
 }
 
+/// Creates a new game when no params are passed.
+/// Creates a new game when a game entity is passed.
 class StartGameUseCase implements UseCase<GameEntity, StartGameParams> {
   const StartGameUseCase();
 
@@ -33,15 +35,21 @@ class StartGameUseCase implements UseCase<GameEntity, StartGameParams> {
   Result<GameEntity> call({required StartGameParams params}) {
     if (params.gameEntity == null) {
       return Result.success(
-        data: GameEntity.initial(),
+        data: GameEntity.initial(
+            player1Name: 'Player 1', player2Name: 'Player 2'),
       );
     }
 
     return Result.success(
-        data: params.gameEntity!.copyWith(turns: [
-      TurnEntity(
-          currentPlayer: params.gameEntity!.player1,
-          board: const BoardEntity.initial())
-    ]));
+      data: params.gameEntity!.copyWith(
+        turns: [
+          TurnEntity(
+            currentPlayer: params.gameEntity!.player1,
+            board:
+                BoardEntity.bySize(size: params.gameEntity!.currentBoard.size),
+          )
+        ],
+      ),
+    );
   }
 }

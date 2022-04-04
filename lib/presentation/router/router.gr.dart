@@ -29,15 +29,15 @@ class _$AppRouter extends RootStackRouter {
 
   @override
   List<RouteConfig> get routes => [
-        RouteConfig(ConfigRoute.name, path: '/'),
-        RouteConfig(GameRoute.name, path: '/game-page')
+        RouteConfig(ConfigRoute.name, path: '/config-page'),
+        RouteConfig(GameRoute.name, path: '/')
       ];
 }
 
 /// generated route for
 /// [ConfigPage]
 class ConfigRoute extends PageRouteInfo<void> {
-  const ConfigRoute() : super(ConfigRoute.name, path: '/');
+  const ConfigRoute() : super(ConfigRoute.name, path: '/config-page');
 
   static const String name = 'ConfigRoute';
 }
@@ -45,7 +45,7 @@ class ConfigRoute extends PageRouteInfo<void> {
 /// generated route for
 /// [GamePage]
 class GameRoute extends PageRouteInfo<void> {
-  const GameRoute() : super(GameRoute.name, path: '/game-page');
+  const GameRoute() : super(GameRoute.name, path: '/');
 
   static const String name = 'GameRoute';
 }

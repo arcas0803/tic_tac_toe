@@ -1,21 +1,23 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:tic_tac_toe/domain/entities/board_entity.dart';
+import 'package:tic_tac_toe/domain/entities/cell_entity.dart';
 import 'package:tic_tac_toe/domain/entities/player_entity.dart';
 import 'package:tic_tac_toe/domain/entities/symbol_play.dart';
 import 'package:tic_tac_toe/domain/entities/turn_entity.dart';
 import 'package:uuid/uuid.dart';
 
+/// Represents a tic tac toe game logic.
 class GameEntity extends Equatable {
   // Id game
   final String id;
-
   // Player A
   final PlayerEntity player1;
   // Player B
   final PlayerEntity player2;
   // List of turns in the game
   final List<TurnEntity> turns;
+
   const GameEntity({
     required this.id,
     required this.player1,
@@ -23,47 +25,51 @@ class GameEntity extends Equatable {
     required this.turns,
   });
 
-  GameEntity.initial()
-      : id = const Uuid().v4(),
-        player1 = const PlayerEntity(
-            name: 'Player 1', symbol: SymbolPlay.x, color: Colors.red),
-        player2 = const PlayerEntity(
-            name: 'Player 2', symbol: SymbolPlay.o, color: Colors.amber),
-        turns = const [
+  /// Creates a game with the [player1] and [player2] names.
+  /// The [player1] will be the first player.
+  /// The board will be created with the size 3x3.
+  GameEntity.initial({
+    required String player1Name,
+    required String player2Name,
+  })  : id = const Uuid().v4(),
+        player1 = PlayerEntity(
+            name: player1Name, symbol: SymbolPlay.x, color: Colors.red),
+        player2 = PlayerEntity(
+            name: player2Name, symbol: SymbolPlay.o, color: Colors.amber),
+        turns = [
           TurnEntity.initial(
-              currentPlayer:
-                  PlayerEntity(name: 'Player 1', symbol: SymbolPlay.x))
+            currentPlayer:
+                PlayerEntity(name: player1Name, symbol: SymbolPlay.x),
+          ),
         ];
 
-  GameEntity.withPlayers({required this.player1, required this.player2})
-      : id = const Uuid().v4(),
-        turns = [TurnEntity.initial(currentPlayer: player1)];
+  /// Creates a game with the [player1] and [player2] entities and [size] for the board.
+  GameEntity.withPlayers({
+    required this.player1,
+    required this.player2,
+    int size = 3,
+  })  : id = const Uuid().v4(),
+        turns = [
+          TurnEntity.initial(currentPlayer: player1, size: size),
+        ];
 
-  /// Return null if there are not turns.
+  /// Return current turn. Turn can not be empty.
   TurnEntity get currentTurn => turns.last;
 
+  /// Return the current player.
   PlayerEntity get currentPlayer => currentTurn.currentPlayer;
 
+  /// Return the current board.
   BoardEntity get currentBoard => currentTurn.board;
 
   /// Return null when no winner.
   PlayerEntity? get winnerPlayer => turns.last.winner;
 
-  List<List<int>>? get winnerCells => turns.last.winnerCells;
+  /// Return null when no winner. Else return the winner cells.
+  List<CellEntity>? get winnerCells => turns.last.winnerCells;
 
   /// Defines if the turn can be replay.
   bool get canReplay => turns.length > 1;
-
-  /// Get player from symbol.
-  PlayerEntity getPlayerFromSymbol({required SymbolPlay symbol}) {
-    if (symbol == player1.symbol) {
-      return player1;
-    } else if (symbol == player2.symbol) {
-      return player2;
-    } else {
-      throw Exception('Invalid symbol');
-    }
-  }
 
   GameEntity copyWith({
     String? id,

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tic_tac_toe/domain/entities/player_entity.dart';
 import 'package:tic_tac_toe/presentation/controllers/game_controller.dart';
 import 'package:tic_tac_toe/presentation/pages/game_page/widgets/controls_bottom_widget.dart';
+import 'package:tic_tac_toe/presentation/pages/game_page/widgets/game_board_widget.dart';
 
 import 'widgets/widgets.dart';
 
@@ -59,28 +60,7 @@ class GamePage extends StatelessWidget {
                             .select((value) => value.turns.last.board),
                       );
 
-                      return Column(
-                        children: [
-                          Expanded(
-                            child: RowGameWidget(
-                              rowPosition: RowPosition.top,
-                              values: board.board[0],
-                            ),
-                          ),
-                          Expanded(
-                            child: RowGameWidget(
-                              rowPosition: RowPosition.center,
-                              values: board.board[1],
-                            ),
-                          ),
-                          Expanded(
-                            child: RowGameWidget(
-                              rowPosition: RowPosition.bottom,
-                              values: board.board[2],
-                            ),
-                          ),
-                        ],
-                      );
+                      return const GameBoardWidget();
                     },
                   ),
                 ),
