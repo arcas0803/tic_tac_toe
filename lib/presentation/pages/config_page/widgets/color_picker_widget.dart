@@ -84,8 +84,8 @@ class CircleSelectWidget extends StatelessWidget {
             color: _color,
             isSelected: _isSelected,
           ),
-          child: Container(
-            height: 50,
+          child: const Center(
+            child: SizedBox(),
           ),
         ),
       ),

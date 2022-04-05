@@ -8,8 +8,13 @@ part 'router.gr.dart';
 @MaterialAutoRouter(
   replaceInRouteName: 'Page,Route',
   routes: <AutoRoute>[
-    AutoRoute(page: ConfigPage),
-    AutoRoute(page: GamePage, initial: true),
+    AutoRoute(
+      page: ConfigPage,
+      initial: true,
+    ),
+    AutoRoute(
+      page: GamePage,
+    ),
   ],
 )
 class AppRouter extends _$AppRouter {}

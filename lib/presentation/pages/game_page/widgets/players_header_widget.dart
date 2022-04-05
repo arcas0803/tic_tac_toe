@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tic_tac_toe/domain/entities/symbol_play.dart';
 import 'package:tic_tac_toe/presentation/controllers/game_controller.dart';
 
 class PlayersHeaderWidget extends StatelessWidget {
@@ -27,6 +28,7 @@ class PlayersHeaderWidget extends StatelessWidget {
 
               return PlayerNameWidget(
                 name: player.name,
+                symbolPlay: player.symbol,
                 color: isWinnerPlayer ? Colors.deepPurple : player.color,
                 isCurrentPlayer: isCurrentPlayer,
                 isWinner: isWinnerPlayer,
@@ -52,6 +54,7 @@ class PlayersHeaderWidget extends StatelessWidget {
 
               return PlayerNameWidget(
                 name: player.name,
+                symbolPlay: player.symbol,
                 color: isWinnerPlayer ? Colors.deepPurple : player.color,
                 isCurrentPlayer: isCurrentPlayer,
                 isWinner: isWinnerPlayer,
@@ -73,27 +76,8 @@ class PlayerBoxWidget extends StatelessWidget {
     return Expanded(
       flex: 4,
       child: SizedBox(
-        height: 100,
+        height: MediaQuery.of(context).size.height * 0.1,
         child: Center(child: child),
-      ),
-    );
-  }
-}
-
-class ReplayWidget extends ConsumerWidget {
-  const ReplayWidget({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, ref) {
-    final canReplay =
-        ref.watch(gameControllerProvider.select((value) => value.canReplay));
-    return Expanded(
-      flex: 2,
-      child: IconButton(
-        onPressed: canReplay
-            ? () => ref.read(gameControllerProvider.notifier).replayTurn()
-            : null,
-        icon: const Icon(Icons.replay),
       ),
     );
   }
@@ -104,12 +88,14 @@ class PlayerNameWidget extends StatelessWidget {
   final Color color;
   final bool isCurrentPlayer;
   final bool isWinner;
+  final SymbolPlay symbolPlay;
   const PlayerNameWidget({
     Key? key,
     required this.name,
     required this.color,
     required this.isCurrentPlayer,
     required this.isWinner,
+    required this.symbolPlay,
   }) : super(key: key);
 
   @override
@@ -122,7 +108,9 @@ class PlayerNameWidget extends StatelessWidget {
       ),
       duration: const Duration(milliseconds: 500),
       child: Text(
-        isWinner ? '👑 $name' : name,
+        isWinner
+            ? '👑 $name ${symbolPlayToString(symbolPlay)}'
+            : '$name ${symbolPlayToString(symbolPlay)}',
       ),
     );
   }

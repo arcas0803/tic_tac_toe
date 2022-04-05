@@ -28,6 +28,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("Cancelar"),
         "close": MessageLookupByLibrary.simpleMessage("Cerrar"),
         "game_name": MessageLookupByLibrary.simpleMessage("Tic Tac Toe"),
+        "name_label_player_1":
+            MessageLookupByLibrary.simpleMessage("Nombre del jugador 1"),
+        "name_label_player_2":
+            MessageLookupByLibrary.simpleMessage("Nombre del jugador 2"),
         "new_game": MessageLookupByLibrary.simpleMessage("Nuevo juego"),
         "reset": MessageLookupByLibrary.simpleMessage("Reiniciar"),
         "settings_game":

@@ -1,66 +1,87 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tic_tac_toe/common/constants/id.dart';
 import 'package:tic_tac_toe/domain/entities/symbol_play.dart';
+import 'package:tic_tac_toe/presentation/controllers/color_picker_controller.dart';
+import 'package:tic_tac_toe/presentation/controllers/symbol_picker_controller.dart';
 
-class SymbolPickerWidget extends StatelessWidget {
-  final SymbolPlay _value;
-  final Color _color;
-  final void Function({required SymbolPlay symbolPlay}) _onTap;
+class SymbolPickerWidget extends ConsumerWidget {
+  final String id;
 
   const SymbolPickerWidget({
     Key? key,
-    required SymbolPlay value,
-    required Color color,
-    required void Function({required SymbolPlay symbolPlay}) onTap,
-  })  : _value = value,
-        _color = color,
-        _onTap = onTap,
-        super(key: key);
+    required this.id,
+  }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Consumer(builder: (context, ref, child) {
-      return Row(
-        children: [
-          Expanded(
-            child: Center(
-              child: GestureDetector(
-                onTap: () => _onTap(symbolPlay: SymbolPlay.x),
-                child: CustomPaint(
-                  painter: CrossPainter(
-                      color: _value == SymbolPlay.x ? _color : Colors.black),
-                  child: const SizedBox(height: 50, width: 50),
-                ),
+  Widget build(BuildContext context, ref) {
+    final selected = ref.watch(
+      symbolPickerControllerProvider.select(
+        (value) {
+          if (id == IdConstants.player1Id) {
+            return value.player1Symbol;
+          }
+          return value.player2Symbol;
+        },
+      ),
+    );
+
+    final color = ref.watch(
+      colorPickerControllerProvider(id),
+    );
+
+    return Row(
+      children: [
+        Expanded(
+          child: Center(
+            child: GestureDetector(
+              onTap: id == IdConstants.player1Id
+                  ? () => ref
+                      .read(symbolPickerControllerProvider.notifier)
+                      .changePlayer1Symbol(symbolPlay: SymbolPlay.x)
+                  : () => ref
+                      .read(symbolPickerControllerProvider.notifier)
+                      .changePlayer2Symbol(symbolPlay: SymbolPlay.x),
+              child: CustomPaint(
+                painter: CrossPainter(
+                    color: selected == SymbolPlay.x ? color : Colors.black),
+                child: const SizedBox(height: 50, width: 50),
               ),
             ),
           ),
-          Expanded(
-            child: Center(
-              child: GestureDetector(
-                onTap: () => _onTap(symbolPlay: SymbolPlay.o),
-                child: CustomPaint(
-                  painter: CirclePainter(
-                      color: _value == SymbolPlay.o ? _color : Colors.black),
-                  child: const SizedBox(height: 50, width: 50),
-                ),
+        ),
+        Expanded(
+          child: Center(
+            child: GestureDetector(
+              onTap: id == IdConstants.player1Id
+                  ? () => ref
+                      .read(symbolPickerControllerProvider.notifier)
+                      .changePlayer1Symbol(symbolPlay: SymbolPlay.o)
+                  : () => ref
+                      .read(symbolPickerControllerProvider.notifier)
+                      .changePlayer2Symbol(symbolPlay: SymbolPlay.o),
+              child: CustomPaint(
+                painter: CirclePainter(
+                    color: selected == SymbolPlay.o ? color : Colors.black),
+                child: const SizedBox(height: 50, width: 50),
               ),
             ),
           ),
-        ],
-      );
-    });
+        ),
+      ],
+    );
   }
 }
 
 class CrossPainter extends CustomPainter {
-  final Color _color;
+  final Color color;
 
-  CrossPainter({required Color color}) : _color = color;
+  CrossPainter({required Color color}) : color = color;
 
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = _color
+      ..color = color
       ..style = PaintingStyle.stroke
       ..strokeWidth = 10.0
       ..strokeCap = StrokeCap.round;
@@ -76,16 +97,16 @@ class CrossPainter extends CustomPainter {
 }
 
 class CirclePainter extends CustomPainter {
-  final Color _color;
+  final Color color;
 
   CirclePainter({
     required Color color,
-  }) : _color = color;
+  }) : color = color;
 
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = _color
+      ..color = color
       ..style = PaintingStyle.stroke
       ..strokeWidth = 10
       ..strokeCap = StrokeCap.round;

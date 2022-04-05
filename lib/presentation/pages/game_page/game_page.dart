@@ -60,12 +60,16 @@ class GamePage extends StatelessWidget {
                             .select((value) => value.turns.last.board),
                       );
 
-                      return const GameBoardWidget();
+                      return const AspectRatio(
+                          aspectRatio: 1, child: GameBoardWidget());
                     },
                   ),
                 ),
               ),
-              const ControlsBottomWidget(),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 10.0),
+                child: ControlsBottomWidget(),
+              ),
             ],
           );
         }),

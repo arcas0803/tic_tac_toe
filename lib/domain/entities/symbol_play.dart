@@ -19,9 +19,9 @@ SymbolPlay symbolPlayFromString(String value) {
 String symbolPlayToString(SymbolPlay value) {
   switch (value) {
     case SymbolPlay.x:
-      return 'x';
+      return 'X';
     case SymbolPlay.o:
-      return 'o';
+      return 'O';
     default:
       return '';
   }

@@ -13,5 +13,7 @@
         }
     },
     "new_game": "Nuevo juego",
-    "close": "Cerrar"
+    "close": "Cerrar",
+    "name_label_player_1" : "Nombre del jugador 1",
+    "name_label_player_2" : "Nombre del jugador 2"
 }

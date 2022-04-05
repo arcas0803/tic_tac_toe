@@ -139,6 +139,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Nombre del jugador 1`
+  String get name_label_player_1 {
+    return Intl.message(
+      'Nombre del jugador 1',
+      name: 'name_label_player_1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nombre del jugador 2`
+  String get name_label_player_2 {
+    return Intl.message(
+      'Nombre del jugador 2',
+      name: 'name_label_player_2',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
