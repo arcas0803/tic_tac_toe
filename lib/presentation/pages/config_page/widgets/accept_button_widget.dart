@@ -27,7 +27,6 @@ class AcceptButtonWidget extends ConsumerWidget {
               .read(
                   playerNameControllerProvider(IdConstants.player1Id).notifier)
               .state;
-          print(player1Name);
           final player2Name = ref
               .read(
                   playerNameControllerProvider(IdConstants.player2Id).notifier)
