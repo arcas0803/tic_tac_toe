@@ -27,6 +27,7 @@ class AcceptButtonWidget extends ConsumerWidget {
               .read(
                   playerNameControllerProvider(IdConstants.player1Id).notifier)
               .state;
+          print(player1Name);
           final player2Name = ref
               .read(
                   playerNameControllerProvider(IdConstants.player2Id).notifier)
@@ -42,11 +43,15 @@ class AcceptButtonWidget extends ConsumerWidget {
               .state;
 
           final player1 = PlayerEntity(
-              name: player1Name.isEmpty ? IdConstants.player1Id : player1Name,
+              name: player1Name.isEmpty
+                  ? S.of(context).name_label_player_1
+                  : player1Name,
               symbol: player1Symbol,
               color: player1Color);
           final player2 = PlayerEntity(
-              name: player2Name.isEmpty ? IdConstants.player2Id : player2Name,
+              name: player2Name.isEmpty
+                  ? S.of(context).name_label_player_2
+                  : player2Name,
               symbol: player2Symbol,
               color: player2Color);
           final game = GameEntity.withPlayers(

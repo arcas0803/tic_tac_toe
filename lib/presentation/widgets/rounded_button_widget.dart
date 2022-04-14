@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Rounded button used across app
 class RoundedButtonWidget extends StatelessWidget {
@@ -32,11 +33,12 @@ class RoundedButtonWidget extends StatelessWidget {
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.symmetric(horizontal: 8.0.w, vertical: 8.0.h),
         child: Text(
           title,
-          style: const TextStyle(
-            fontSize: 30,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            fontSize: 20.sp,
             color: Colors.white,
           ),
         ),

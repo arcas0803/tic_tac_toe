@@ -51,7 +51,7 @@ class SymbolPickerController extends StateNotifier<SymbolPickerState> {
   }
 }
 
-final symbolPickerControllerProvider =
-    StateNotifierProvider<SymbolPickerController, SymbolPickerState>(
+final symbolPickerControllerProvider = StateNotifierProvider.autoDispose<
+    SymbolPickerController, SymbolPickerState>(
   (ref) => SymbolPickerController(),
 );

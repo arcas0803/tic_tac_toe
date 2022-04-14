@@ -13,6 +13,7 @@ class NamePickerWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
+    ref.watch(playerNameControllerProvider(id));
     return TextFormField(
       decoration: InputDecoration(
         labelText: label,

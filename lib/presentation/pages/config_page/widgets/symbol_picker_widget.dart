@@ -76,7 +76,7 @@ class SymbolPickerWidget extends ConsumerWidget {
 class CrossPainter extends CustomPainter {
   final Color color;
 
-  CrossPainter({required Color color}) : color = color;
+  CrossPainter({required this.color});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -100,8 +100,8 @@ class CirclePainter extends CustomPainter {
   final Color color;
 
   CirclePainter({
-    required Color color,
-  }) : color = color;
+    required this.color,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
